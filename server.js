@@ -13,14 +13,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const mongoUrl = process.env.MLAB_IMAGES_URI;
 
-// prettyfy json respons in the browser
+// prettfy json response in the browser
 app.set('json spaces', 2);
 
 // create static server
 app.use(express.static(path.join(__dirname)));
-
-// home page
-// app.get('/test', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 // search page
 app.get('/search/:query', (req, res) => {
@@ -56,7 +53,7 @@ app.get('/search/:query', (req, res) => {
     });
 });
 
-// latest search page
+// search history page
 app.get('/latest', (req, res) => {
   const findDoc = (db, callback) => {
     db.collection('images')
@@ -74,9 +71,9 @@ app.get('/latest', (req, res) => {
     });
   };
 
+  // connect to database and run find function
   mongo.connect(mongoUrl, (err, db) => {
     if (err) throw err;
-    console.log('connected to mongo mlab');
     findDoc(db, () => db.close());
   });
 });
